@@ -19,19 +19,15 @@ public class Users {
 	
 //	@Size(min = 3, message = "Size mustbe of atleast 3 characters")
 	private String name;
-	
-	@OneToMany(mappedBy = "user")
-	private List<Todos> todoList;
 
 	public Users() {
 		super();
 	}
 
-	public Users(int id, String name, List<Todos> todoList) {
+	public Users(int id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.todoList = todoList;
 	}
 
 	public int getId() {
@@ -48,14 +44,6 @@ public class Users {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public List<Todos> getTodoList() {
-		return todoList;
-	}
-
-	public void setTodoList(List<Todos> todoList) {
-		this.todoList = todoList;
 	}
 
 	@Override

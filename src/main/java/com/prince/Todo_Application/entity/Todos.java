@@ -3,85 +3,71 @@ package com.prince.Todo_Application.entity;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-//import jakarta.validation.constraints.Size;
 
 @Entity
 public class Todos {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	
-//	@Size(min = 10 , message = "Enter atleast 10 characters")
-	private String description;
-	private LocalDate startDate;
-	private LocalDate completionDate;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Users user;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public Todos() {
-		super();
-	}
+    private String description;
+    private LocalDate startDate;
+    private LocalDate completionDate;
 
-	public Todos(int id, String description, LocalDate startDate, LocalDate completionDate, Users user) {
-		super();
-		this.id = id;
-		this.description = description;
-		this.startDate = startDate;
-		this.completionDate = completionDate;
-		this.user = user;
-	}
+    private int userId;   // 🔥 Link with User Service
 
-	public int getId() {
-		return id;
-	}
+    public Todos() {}
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public Todos(int id, String description, LocalDate startDate, LocalDate completionDate, int userId) {
+        this.id = id;
+        this.description = description;
+        this.startDate = startDate;
+        this.completionDate = completionDate;
+        this.userId = userId;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public LocalDate getStartDate() {
-		return startDate;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public LocalDate getCompletionDate() {
-		return completionDate;
-	}
+    public LocalDate getStartDate() {
+        return startDate;
+    }
 
-	public void setCompletionDate(LocalDate completionDate) {
-		this.completionDate = completionDate;
-	}
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
 
-	public Users getUser() {
-		return user;
-	}
+    public LocalDate getCompletionDate() {
+        return completionDate;
+    }
 
-	public void setUser(Users user) {
-		this.user = user;
-	}
+    public void setCompletionDate(LocalDate completionDate) {
+        this.completionDate = completionDate;
+    }
 
-	@Override
-	public String toString() {
-		return "Todos [id=" + id + ", description=" + description + ", startDate=" + startDate + ", completionDate="
-				+ completionDate + ", user=" + user + "]";
-	}
+    public int getUserId() {
+        return userId;
+    }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 }
+
