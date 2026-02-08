@@ -16,75 +16,69 @@ import com.prince.Todo_Application.repository.TodosJpa;
 @Service
 public class TodoServices {
 
-    private TodosJpa repository;
-    private RestTemplate restTemplate;
+	private TodosJpa repository;
+	private RestTemplate restTemplate;
 
-    public TodoServices(TodosJpa repository, RestTemplate restTemplate) {
-        this.repository = repository;
-        this.restTemplate = restTemplate;
-    }
+	public TodoServices(TodosJpa repository, RestTemplate restTemplate) {
+		this.repository = repository;
+		this.restTemplate = restTemplate;
+	}
 
-    public List<Todos> getAllTodos() {
-        return repository.findAll();
-    }
+	public List<Todos> getAllTodos() {
+		return repository.findAll();
+	}
 
-    public List<Todos> getTodosByUserId(int userId) {
-        return repository.findByUserId(userId);
-    }
-    
-    public Optional<Todos> findTodoByTodoId(int id) {
-    	return repository.findById(id);
-    }
+	public List<Todos> getTodosByUserId(int userId) {
+		return repository.findByUserId(userId);
+	}
 
-    public ResponseEntity<Object> createTodo(int userId, Todos todo) throws UserNotFoundException {
-        String userServiceUrl = "http://localhost:8080/users/" + userId;
+	public Optional<Todos> findTodoByTodoId(int id) {
+		return repository.findById(id);
+	}
 
-        try {
-            restTemplate.getForObject(userServiceUrl, Object.class);
-        } catch (Exception e) {
-            throw new UserNotFoundException("User not found with id : " + userId);
-        }
+	public ResponseEntity<Object> createTodo(int userId, Todos todo) throws UserNotFoundException {
+		String userServiceUrl = "http://localhost:8080/users/" + userId;
 
-        todo.setUserId(userId);
-        Todos savedTodo = repository.save(todo);
+		try {
+			restTemplate.getForObject(userServiceUrl, Object.class);
+		} catch (Exception e) {
+			throw new UserNotFoundException("User not found with id : " + userId);
+		}
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedTodo.getId())
-                .toUri();
+		todo.setUserId(userId);
+		Todos savedTodo = repository.save(todo);
 
-        return ResponseEntity.created(location).build();
-    }
-    
-    public ResponseEntity<Object> deleteByTodoId(int id) {
-        Todos todo = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Todo not found"));
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedTodo.getId())
+				.toUri();
 
-        repository.delete(todo);
-        return ResponseEntity.noContent().build();
-    }
+		return ResponseEntity.created(location).build();
+	}
+
+	public ResponseEntity<Object> deleteByTodoId(int id) {
+		Todos todo = repository.findById(id).orElseThrow(() -> new RuntimeException("Todo not found"));
+
+		repository.delete(todo);
+		return ResponseEntity.ok("Todo with id : "+id+" deleted successfully");
+	}
 
 	public ResponseEntity<Todos> updateTodo(int id, Todos todo) {
-		Todos exsitingTodo =  repository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Todo not Found"));
-		
-		if(todo.getDescription() != null) {
-		    exsitingTodo.setDescription(todo.getDescription());
-	    }
-		
-		if(todo.getStartDate() != null) {
-		    exsitingTodo.setStartDate(todo.getStartDate());
-	    }
-		
-		if(todo.getCompletionDate() != null) {
-		    exsitingTodo.setCompletionDate(todo.getCompletionDate());
-	    }
-		
+		Todos exsitingTodo = repository.findById(id).orElseThrow(() -> new RuntimeException("Todo not Found"));
+
+		if (todo.getDescription() != null) {
+			exsitingTodo.setDescription(todo.getDescription());
+		}
+
+		if (todo.getStartDate() != null) {
+			exsitingTodo.setStartDate(todo.getStartDate());
+		}
+
+		if (todo.getCompletionDate() != null) {
+			exsitingTodo.setCompletionDate(todo.getCompletionDate());
+		}
+
 		Todos updatedTodo = repository.save(exsitingTodo);
-		
+
 		return ResponseEntity.ok(updatedTodo);
 	}
 
 }
-

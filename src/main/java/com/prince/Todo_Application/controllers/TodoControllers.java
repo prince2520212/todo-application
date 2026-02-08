@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prince.Todo_Application.entity.Todos;
 import com.prince.Todo_Application.exception.UserNotFoundException;
 import com.prince.Todo_Application.services.TodoServices;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/todos")
@@ -52,7 +55,7 @@ public class TodoControllers {
 
 
     @PostMapping("/user/{userId}")
-    public ResponseEntity<Object> createTodo(@PathVariable int userId, @RequestBody Todos todo) throws UserNotFoundException {
+    public ResponseEntity<Object> createTodo(@PathVariable int userId, @Valid @RequestBody Todos todo) throws UserNotFoundException {
         return todoServices.createTodo(userId, todo);
     }
     
@@ -61,8 +64,14 @@ public class TodoControllers {
     	return todoServices.deleteByTodoId(id);
     }
     
-    @PutMapping("/{id}")
-    public ResponseEntity<Todos> updateTodo(@PathVariable int id , @RequestBody Todos todo) {
-    	return todoServices.updateTodo(id , todo);
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<Todos> updateTodo(@PathVariable int id,@Valid @RequestBody Todos todo) {
+		return todoServices.updateTodo(id, todo);
+	}
+	
+	@PatchMapping("/{id}")
+	public ResponseEntity<Todos> patchTodo(@PathVariable int id , @RequestBody Todos todo) {
+		return todoServices.updateTodo(id, todo);
+	}
+	
 }

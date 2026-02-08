@@ -15,6 +15,8 @@ import com.prince.Todo_Application.entity.Users;
 import com.prince.Todo_Application.exception.UserNotFoundException;
 import com.prince.Todo_Application.services.UserServices;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class UserControllers {
 	
@@ -37,7 +39,7 @@ public class UserControllers {
 	}
 	
 	@PostMapping("/users")
-	public ResponseEntity<Void> createUser(@RequestBody Users user) {
+	public ResponseEntity<Void> createUser(@Valid @RequestBody Users user) {
 		return services.createUser(user);
 
 	}
@@ -49,9 +51,8 @@ public class UserControllers {
 	
 	@PutMapping("/users/{id}")
 	public ResponseEntity<Users> upadateUser(@PathVariable int id ,
-			@RequestBody Users user) throws UserNotFoundException {
+			@Valid @RequestBody Users user) throws UserNotFoundException {
 		return services.updateUser(id, user);
 	}
-	
 
 }

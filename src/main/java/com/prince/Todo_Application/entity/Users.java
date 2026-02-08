@@ -1,14 +1,10 @@
 package com.prince.Todo_Application.entity;
 
-import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-//import jakarta.validation.constraints.Size;
-
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Users {
@@ -16,8 +12,8 @@ public class Users {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-//	@Size(min = 3, message = "Size mustbe of atleast 3 characters")
+
+	@Size(min = 3, message = "Enter atleast 3 characters")
 	private String name;
 
 	public Users() {

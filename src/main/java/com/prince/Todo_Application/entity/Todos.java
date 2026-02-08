@@ -6,19 +6,28 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Todos {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	  @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private int id;
 
-    private String description;
-    private LocalDate startDate;
-    private LocalDate completionDate;
+	    @NotBlank(message = "Description is required")
+	    @Size(min = 10, message = "Enter atleast 10 characters")
+	    private String description;
 
-    private int userId;   // 🔥 Link with User Service
+	    @NotNull(message = "Start date is required")
+	    private LocalDate startDate;
+
+	    @NotNull(message = "Completion date is required")
+	    private LocalDate completionDate;
+
+	    private Integer userId;
 
     public Todos() {}
 
