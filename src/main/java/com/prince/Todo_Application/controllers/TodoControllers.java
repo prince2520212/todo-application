@@ -1,13 +1,13 @@
 package com.prince.Todo_Application.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,7 +47,6 @@ public class TodoControllers {
         if(todo.getUserId() != userId){
             return ResponseEntity.badRequest().build();
         }
-
         return ResponseEntity.ok(todo);
     }
 
@@ -60,5 +59,10 @@ public class TodoControllers {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteTodoByTodoId(@PathVariable int id) {
     	return todoServices.deleteByTodoId(id);
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Todos> updateTodo(@PathVariable int id , @RequestBody Todos todo) {
+    	return todoServices.updateTodo(id , todo);
     }
 }

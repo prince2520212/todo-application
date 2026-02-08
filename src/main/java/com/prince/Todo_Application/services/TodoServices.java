@@ -65,5 +65,26 @@ public class TodoServices {
         return ResponseEntity.noContent().build();
     }
 
+	public ResponseEntity<Todos> updateTodo(int id, Todos todo) {
+		Todos exsitingTodo =  repository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Todo not Found"));
+		
+		if(todo.getDescription() != null) {
+		    exsitingTodo.setDescription(todo.getDescription());
+	    }
+		
+		if(todo.getStartDate() != null) {
+		    exsitingTodo.setStartDate(todo.getStartDate());
+	    }
+		
+		if(todo.getCompletionDate() != null) {
+		    exsitingTodo.setCompletionDate(todo.getCompletionDate());
+	    }
+		
+		Todos updatedTodo = repository.save(exsitingTodo);
+		
+		return ResponseEntity.ok(updatedTodo);
+	}
+
 }
 
