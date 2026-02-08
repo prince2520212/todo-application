@@ -58,12 +58,12 @@ public class TodoServices {
     }
     
     public ResponseEntity<Object> deleteByTodoId(int id) {
-    	repository.findById(id);
-    	repository.deleteById(id);
-    	
-    	return ResponseEntity.noContent().build();
-    	
-    	
+        Todos todo = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Todo not found"));
+
+        repository.delete(todo);
+        return ResponseEntity.noContent().build();
     }
+
 }
 

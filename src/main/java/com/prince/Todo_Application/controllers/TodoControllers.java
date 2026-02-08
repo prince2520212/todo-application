@@ -36,17 +36,28 @@ public class TodoControllers {
         return todoServices.getTodosByUserId(userId);
     }
     
-    @GetMapping("/user/{userId}/{id}")
-    public Optional<Todos> findByTodoId(@PathVariable int id) {
-    	return todoServices.findTodoByTodoId(id);
+    @GetMapping("/user/{userId}/{todoId}")
+    public ResponseEntity<Todos> findTodo(
+            @PathVariable int userId,
+            @PathVariable int todoId) {
+
+        Todos todo = todoServices.findTodoByTodoId(todoId)
+                .orElseThrow(() -> new RuntimeException("Todo not found"));
+
+        if(todo.getUserId() != userId){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(todo);
     }
+
 
     @PostMapping("/user/{userId}")
     public ResponseEntity<Object> createTodo(@PathVariable int userId, @RequestBody Todos todo) throws UserNotFoundException {
         return todoServices.createTodo(userId, todo);
     }
     
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteTodoByTodoId(@PathVariable int id) {
     	return todoServices.deleteByTodoId(id);
     }

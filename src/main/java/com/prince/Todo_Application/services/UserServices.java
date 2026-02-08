@@ -52,8 +52,9 @@ public class UserServices {
 
 	    Users existingUser = repository.findById(id)
 	            .orElseThrow(() -> new UserNotFoundException("user with id : " + id + " not present"));
-	    existingUser.setName(user.getName());
-
+	    if(user.getName() != null) {
+		    existingUser.setName(user.getName());
+	    }
 	    Users updatedUser = repository.save(existingUser);
 
 	    return ResponseEntity.ok(updatedUser);
